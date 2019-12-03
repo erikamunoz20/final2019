@@ -1,7 +1,7 @@
 ---
 title: "Aides Drug"
-author: "James Brownlow, emperor of all things seen and unseen"
-date: "18 Nov 2019"
+author: "Erika Munoz"
+date: "11/16/2019"
 output: html_document
 ---
 
@@ -21,25 +21,151 @@ A new  preventative aides (abacavirinol) is under test in clinical trials. Analy
 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
 
+In my method I would be using these variables total population, females, males, drug users and LGBTQ. For our graphical descriptive results we will use a bar chart. For our numerical results we will be using the xtab test. For our analysis we will be using the chisq test.
+ 
+ 
+ 
+$H_0$:"There is no effect of the drug on if our population contracted aids or not."
+
+$H_A$:"There is a effect of the drug on if our population contracted aids or not."
+
+$H_0$:"There is no effect of the drug on if our female population contracted aids or not."
+
+$H_A$:"There is a effect of the drug on if our female population contracted aids or not."
+
+$H_0$:"There is no effect of the drug on if our male population contracted aids or not."
+
+$H_A$:"There is a effect of the drug on if our male population contracted aids or not."
+
+$H_0$:"There is no effect of the drug on if our drug users population contracted aids or not."
+
+$H_A$:"There is a effect of the drug on if our drug users population contracted aids or not."
+
+$H_0$:"There is no effect of the drug on if our LGBTQ population contracted aids or not."
+
+$H_A$:"There is a effect of the drug on if our LGBTQ population contracted aids or not."
+
 #Results
 
 <!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
 
 ## Descriptive Results
 
+
 ### Graphical Descriptive Results
 
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question. Bottom line is to explain the features of the graph that are relevant to conforming or departing to what is expected by your null hypothesis !-->
 
+```{r}
+barchartGC(~infected+treatment, data=avast, type="percent", main="total population")
+```
+
+There are less people that are taking the drug are reporting being affectecd by aids compared to the same group who are taking the placebo.
+
+```{r}
+barchartGC(~infected+treatment, data=filter(avast, sex=="gal"), type="percent", main="Females")
+```
+
+The graph shows that the drug did work. The population of females that have contracted aids the placebo group 80% is higher than the female poulation taking the drug that is at 30%. Compared to the female population that does not have aids the drug and placebo group are at the same percentage of about 50%. 
+
+```{r}
+barchartGC(~infected+treatment, data=filter(avast, sex=="guy"), type="percent", main="Males")
+```
+
+In this graph the group of males that have contracted aids the males taking the drug are at 59% and the males that are taking the placebo are 40%. Therefore there is an increased risk of contracting aids for the males. The none group of males the placebo group is at 50% and the drug group is at 47%. 
+
+```{r}
+barchartGC(~infected+treatment, data=filter(avast, DrugUser=="yes"), type="percent", main="Drug Users")
+```
+
+This chart shows that the group of drug users that have contracted aids the percent taking the drug is 24% which is lower than the drug users that are taking the placebo which are at a percent of 79%. This means that the drugs are working and they are at a lower risk of contracting aids. The drug users in the none section are very close the group taking the drug is at 55% and the group that is taking the placebo is at 58%.
+
+```{r}
+barchartGC(~infected+treatment, data=filter(avast, LGBTQ=="gay"), type="percent", main="LGBTQ")
+```
+
+In this chart the group of LGBTQ that have contracted aids the ones to to take the drug are at 79% which is higher than the ones that are taking the placebo which is 25%. This means that the group that is taking the drug is at more of a risk of contracting aids. On the none side both groups are almost even the group that is taking the drug is at 44% and the group taking the placebo at 46%.
+
+
 ### Numerical Descriptive Results
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
+
+```{r}
+tab1 = xtabs(~infected+treatment, data=avast) 
+rowPerc(tab1)
+```
+
+There is a 19% difference between the group taking drugs and the group that takes placebo. The group with the placebo is higher than the group with the drug. 
+
+```{r}
+tab2= xtabs(~infected+treatment, data=filter(avast, sex=="gal")) 
+rowPerc(tab2)
+```
+
+In this chart it shows that the people that have contracted aids the females that have taken the drug are at 31.42% and the female group that are taking the placebo are at 68.58%. It is shown that the population of females taking the placebop is higher than the ones taking the drug. 
+
+```{r}
+tab3= xtabs(~infected+treatment, data=filter(avast, sex=="guy")) 
+rowPerc(tab3)
+```
+
+In this chart it shows that the drug group of men that have contracted aids is at 58.82% copmpared to the male group that is taking placebos is at 41.18%. This means that the drug is not working for the males and males are at more risk of contracting aids. 
+
+```{r}
+tab4 = xtabs(~infected+treatment, data=filter(avast, DrugUser=="yes"))
+rowPerc(tab4)
+```
+
+In this chart it shows that the drug users that have contracted aids and that are taking drugs are at 24.29% and the group that are taking placebos are at 75.71%. This means that the drug is workling and that this group is at less of a risk from contracting aids. The group that is none has a percentage of people that have been taking the drugs that are at 47.59% and the people that are taking the placebo that are at 52.41%. 
+
+```{r}
+tab5 = xtabs(~infected+treatment, data=filter(avast, LGBTQ=="gay"))
+rowPerc(tab5)
+```
+
+In this chart there is a percentage of 72.38% from the LGBTQ group that has contracted aids and is taking the drug compared to the group that is taking the placebo 27.62%. Since the drug percentage is higher than the placebo this means the LGBTQ group is more at risk of contracting aids. In the none group there is a 1.9% of a difference. 
+
 
 ## Inferential Results
 
 <!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
 
 
+```{r}
+chisqtestGC(tab1)
+```
+
+Our Pvalue shows as 0 therefore we reject the null hypotheis, $H_0$:"There is no effect of the drug on if our population contracted aids or not." Thus we can conclude that there is an effect on the drug on whether it effects the total population contracts aids or not. 
+
+
+```{r}
+chisqtestGC(tab2)
+```
+
+Our Pvalue is 0 therefore we reject the null hypothesis, $H_0$:"There is no effect of the drug on if our female population contracted aids or not." Thus we can conclude that there is an effect on the drug on whether it effects the female group contracts aids or not.  
+
+```{r}
+chisqtestGC(tab3)
+```
+
+Our pvlaue is (0.0004) therefore we reject the null hypothesis, $H_0$:"There is no effect of the drug on if our male population contracted aids or not." Thus we can conclude that there is an effect on the drug on whether it effects the male group contracts aids or not. 
+
+```{r}
+chisqtestGC(tab4)
+```
+
+This chart the pvalue is 0 therefore we are rejecting the null hypothesis, $H_0$:"There is no effect of the drug on if our drug users population contracted aids or not." Thus this makes the drug users at less of a risk to contract aids and the drugs are working. 
+
+```{r}
+chisqtestGC(tab4)
+```
+
+In this chart the pvalue is 0 therefore we are rejecting the null hypothesis, $H_0$:"There is no effect of the drug on if our LGBTQ population contracted aids or not." thus this means that the LGBTQ group is more at risk of contracting aids and the drug does not work. 
+
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
+
+The drug worked for the female peopulation, total population and drug user population. They are at less of a risk to contract aids. Howerver the drug did not work on the male and LGBTQ populations. Therefore they are more at risk of contracting aids. 
+
